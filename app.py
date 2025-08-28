@@ -22,10 +22,10 @@ def get_chinese_font():
         return FontProperties()
 
 # 奖品和颜色（可动态配置，例如添加新奖品）
-prizes = ["谢谢参与", "四等奖", "三等奖", "二等奖", "一等奖"]
+prizes = ["谢谢参与", "七等奖", "六等奖", "五等奖", "四等奖", "三等奖", "二等奖", "一等奖"]
 # 示例：添加新奖品测试通用性
 # prizes = ["谢谢参与", "四等奖", "三等奖", "二等奖", "一等奖", "特等奖"]
-colors = ["#FF6666", "#FFCC66", "#66CC66", "#66CCCC", "#9999FF"]
+#colors = ["#FF6666", "#FFCC66", "#66CC66", "#66CCCC", "#9999FF"]
 # colors = ["#FF6666", "#FFCC66", "#66CC66", "#66CCCC", "#9999FF", "#FF66FF"]  # 对应添加
 
 # Tk 窗口
@@ -57,7 +57,6 @@ def update_wheel(angle):
     wedges, texts = ax.pie(
         [1] * len(prizes),
         labels=prizes,
-        colors=colors,
         startangle=90,  # 从 90 度（12点钟方向）开始逆时针排列
         wedgeprops=dict(edgecolor='white', linewidth=1)
     )
