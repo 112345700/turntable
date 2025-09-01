@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import math
 from matplotlib.font_manager import FontProperties
+from matplotlib.patches import Polygon, Circle
+import numpy as np
 import pathlib
 
 # macOS 专用字体加载
@@ -44,12 +46,39 @@ velocity = 0
 chinese_font = get_chinese_font()
 
 def draw_pointer(angle):
-    """绘制旋转指针"""
-    length = 1.2
+    """绘制更精致的箭头指针"""
+    ax.set_xlim(-1.5, 1.5)
+    ax.set_ylim(-1.5, 1.5)
+
+    # 角度转弧度
     rad = math.radians(angle)
-    x = length * math.cos(rad)
-    y = length * math.sin(rad)
-    ax.plot([0, x], [0, y], color="red", linewidth=3)
+
+    # 箭头长度和宽度
+    length = 1.3
+    width = 0.1
+
+    # 箭头顶点
+    tip_x = length * math.cos(rad)
+    tip_y = length * math.sin(rad)
+
+    # 箭头底边两个点（垂直方向偏移）
+    left_x = 0.2 * math.cos(rad - math.pi/2)
+    left_y = 0.2 * math.sin(rad - math.pi/2)
+    right_x = 0.2 * math.cos(rad + math.pi/2)
+    right_y = 0.2 * math.sin(rad + math.pi/2)
+
+    # 拼成三角形箭头
+    arrow_coords = [
+        (tip_x, tip_y),
+        (left_x, left_y),
+        (right_x, right_y)
+    ]
+    arrow = Polygon(arrow_coords, closed=True, color="red")
+    ax.add_patch(arrow)
+
+    # 中心小圆点（装饰）
+    center = Circle((0, 0), 0.05, color="black", zorder=10)
+    ax.add_patch(center)
 
 def update_wheel(angle):
     """更新转盘显示"""
@@ -58,7 +87,8 @@ def update_wheel(angle):
         [1] * len(prizes),
         labels=prizes,
         startangle=90,  # 从 90 度（12点钟方向）开始逆时针排列
-        wedgeprops=dict(edgecolor='white', linewidth=1)
+        wedgeprops=dict(edgecolor='white', linewidth=1),
+        radius=1.5
     )
     for text in texts:
         text.set_fontproperties(chinese_font)
